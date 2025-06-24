@@ -1,0 +1,61 @@
+---
+params:
+  author: "Raul Antonio Rodriguez Moreno"
+  xlsx: "data/cv.xlsx"
+  bib: "data/cv.bib"
+title: '`r sprintf("%s - Curriculum Vitæ", params[["author"]])`'
+author: '`r params[["author"]]`'
+output:
+  pagedown::html_resume:
+    self_contained: true
+    mathjax: null
+    css: "assets/cv.css"
+knit: pagedown::chrome_print
+---
+
+```{r}
+#| include: false
+knitr::opts_chunk$set(
+  results = "asis",
+  eval = TRUE,
+  echo = FALSE,
+  message = FALSE,
+  error = FALSE,
+  warning = FALSE
+)
+
+
+invisible(sapply(
+  X = list.files(
+    path = file.path("assets", "R"),
+    pattern = "\\.R$",
+    full.names = TRUE
+  ),
+  FUN = source
+))
+```
+
+# Aside
+
+```{r}
+cat(
+  contact_section(xlsx = params[["xlsx"]], sheet = "contact"),
+  soft_skills_section(xlsx = params[["xlsx"]], sheet = "soft"),
+  skills_section(xlsx = params[["xlsx"]], sheet = "skills"),
+  languages_section(xlsx = params[["xlsx"]], sheet = "languages"),
+  title_section(author = params[["author"]]),
+  profil_section(xlsx = params[["xlsx"]], sheet = "profil"),
+  education_section(xlsx = params[["xlsx"]], sheet = "education", page_break_after = FALSE),
+  experience_section(xlsx = params[["xlsx"]], sheet = "experience", page_break_after = FALSE),
+  #volunteering_section(xlsx = params[["xlsx"]], sheet = "volunteering", page_break_after = FALSE),
+  certificates_section(xlsx = params[["xlsx"]], sheet = "certificates", page_break_after = FALSE),
+  oral_section(xlsx = params[["xlsx"]], sheet = "oral", page_break_after = FALSE, colour = "#33333"),
+  #workshop_section(xlsx = params[["xlsx"]], sheet = "workshop", page_break_after = FALSE, colour = "#33333"),
+  #awards_section(xlsx = params[["xlsx"]], sheet = "awards", page_break_after = FALSE, colour = "#33333"),
+  #poster_section(xlsx = params[["xlsx"]], sheet = "poster", page_break_after = FALSE, colour = "#33333"),
+  #packages_section(xlsx = params[["xlsx"]], sheet = "packages", author = params[["author"]], page_break_after = FALSE),
+  #articles_section(bib = params[["bib"]], author = params[["author"]], page_break_after = FALSE),
+  disclaimer_section(text = NULL),
+  sep = "\n"
+)
+```
